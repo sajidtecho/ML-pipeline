@@ -6,11 +6,22 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import joblib
 import logging
 from pathlib import Path
+import yaml
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+def load_params(params_path: str) -> dict:
+    """Load parameters from a YAML file."""
+    try:
+        with open(params_path, 'r') as file:
+            params = yaml.safe_load(file)
+        logger.info(f"Parameters retrieved from {params_path}")
+        return params
+    except Exception as e:
+        logger.error(f"Error loading parameters: {e}")
+        raise
 
 class ModelTrainer:
     def __init__(self, model_path='models/'):
@@ -127,10 +138,14 @@ class ModelTrainer:
 
 
 if __name__ == "__main__":
-    trainer = ModelTrainer()
-    
-    # Load separate train and test data
     try:
+        params = load_params('params.yaml')
+        n_estimators = params['model_training']['n_estimators']
+        random_state = params['model_training']['random_state']
+        
+        trainer = ModelTrainer()
+        
+        # Load separate train and test data
         train_data = trainer.load_data('./data/processed/train_tfidf.csv')
         test_data = trainer.load_data('./data/processed/test_tfidf.csv')
         
@@ -143,7 +158,7 @@ if __name__ == "__main__":
         y_test = test_data[target_column]
         
         # Train the model
-        trainer.train(X_train, y_train, n_estimators=100, random_state=42)
+        trainer.train(X_train, y_train, n_estimators=n_estimators, random_state=random_state)
         
         # Evaluate the model
         metrics = trainer.evaluate(X_test, y_test)

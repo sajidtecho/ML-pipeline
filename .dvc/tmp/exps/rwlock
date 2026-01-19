@@ -1,1 +1,1 @@
-{"read": {}}
+{"read": {}, "write": {"workspace": {"pid": 17412, "cmd": "src/model_evaluation.py"}, "refs/exps/stash": {"pid": 17412, "cmd": "src/model_evaluation.py"}}}
