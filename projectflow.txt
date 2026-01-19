@@ -1,0 +1,5 @@
+Building Pipeline:
+>> Create a GitHub repo and clone it in local (Add experiments).
+>> Add src folder along with all components(run them individually).
+>> Add setup, requirements, reports or outputs folder, then upload in GitHub.
+>> Now git add, commit, push
